@@ -38,7 +38,9 @@ with left:
         st.session_state["exclude_keyword"] = ""
         st.session_state["exclude_keyword"] = ""
         st.session_state["filter_brands"] = []
-        st.session_state["tag_column"] = []
+        st.session_state[f"add_{tag_column}"] = ""
+        st.session_state[f"remove_{tag_column}"] = ""
+
         
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
