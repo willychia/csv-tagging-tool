@@ -28,14 +28,18 @@ df = st.session_state['df']
 left, right = st.columns(2)
 with left:
     st.markdown("### 🔍 篩選資料")
-    keyword = st.text_input("輸入名稱關鍵字進行篩選（針對 title 欄位）", key="filter_keyword").lower()
-    exclude_keywords = st.text_input("排除 title 含有下列詞語的資料（用逗號分隔）", key="exclude_keyword").lower()
-    selected_brands = st.multiselect("選擇品牌（brand）篩選", df['brand'].dropna().unique(), key="filter_brands")
     # 🔁 放在 checkbox 前面
-    if st.button("🔄 清除所有勾選條件"):
+    if st.button("🔄 清除所有輸入格"):
         st.session_state["filter_empty_feature"] = False
         st.session_state["filter_empty_subject"] = False
         st.session_state["filter_empty_special"] = False
+        st.session_state["filter_keyword"] = ""
+        st.session_state["exclude_keyword"] = ""
+        st.session_state["filter_brands"] = ""
+        
+    keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
+    exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
+    selected_brands = st.multiselect("Brand 篩選", df['brand'].dropna().unique(), key="filter_brands")
     
     # ✅ 勾選框要寫在這個按鈕之後
     col1, col2, col3 = st.columns(3)
