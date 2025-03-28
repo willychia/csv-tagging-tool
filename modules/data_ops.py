@@ -7,6 +7,10 @@ def get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty
     keywords = [k.strip() for k in keyword.split(",") if k.strip()]
     for kw in keywords:
         _df = _df[_df['title'].fillna("").str.contains(kw, case=False)]
+        
+    exclude_keywords = [k.strip() for k in exclude_keywords.split(",") if k.strip()]
+    for kw in exclude_keywords:
+        _df = _df[~_df['title'].fillna("").str.contains(kw, case=False)]
 
     if selected_brands:
         _df = _df[_df['brand'].isin(selected_brands)]
