@@ -35,7 +35,7 @@ with left:
     filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
     filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
 
-filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
 
 # === 標籤新增/刪除 ===
@@ -58,7 +58,7 @@ with right:
         for idx in filtered_df.index:
             original_value = st.session_state['df'].at[idx, tag_column]
             st.session_state['df'].at[idx, tag_column] = modify(original_value)
-        filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
         st.success(f"已更新 {tag_column} 標籤")
 
 # === 快速標籤功能 ===
@@ -82,7 +82,7 @@ if quick_tag_value.strip():
     for idx in match_df.index:
         original = st.session_state['df'].at[idx, quick_tag_column]
         st.session_state['df'].at[idx, quick_tag_column] = add_quick_tag(original)
-    filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
     st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
 
 # === 刪除目前篩選資料 ===
@@ -90,7 +90,7 @@ st.markdown("#### 🧹 刪除目前篩選結果")
 if st.button("🗑️ 刪除目前篩選結果中所有資料"):
     asins_to_delete = filtered_df['asin']
     st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
-    filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
     filtered_df.insert(0, "✔", False)
     st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
