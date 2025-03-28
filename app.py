@@ -38,12 +38,10 @@ with left:
         filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
     with col3:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
-    st.button("🔁 切換 No Feature / Subject / Special 勾選狀態")
-
-if st.button("🔁 切換 No Feature / Subject / Special 勾選狀態"):
-    st.session_state["filter_empty_feature"] = not st.session_state.get("filter_empty_feature", False)
-    st.session_state["filter_empty_subject"] = not st.session_state.get("filter_empty_subject", False)
-    st.session_state["filter_empty_special"] = not st.session_state.get("filter_empty_special", False)
+    if st.button("🔁 切換 No Feature / Subject / Special 勾選狀態"):
+        st.session_state["filter_empty_feature"] = not st.session_state.get("filter_empty_feature", False)
+        st.session_state["filter_empty_subject"] = not st.session_state.get("filter_empty_subject", False)
+        st.session_state["filter_empty_special"] = not st.session_state.get("filter_empty_special", False)
 
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
