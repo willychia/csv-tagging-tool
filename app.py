@@ -28,7 +28,7 @@ df = st.session_state['df']
 left, right = st.columns(2)
 
 with left:
-    left_title_1, left_title_2 = st.column(2)
+    left_title_1, left_title_2 = st.columns(2)
     with left_title_1:
         st.markdown("### 🔍 篩選資料")
     with left_title_2:
