@@ -90,7 +90,7 @@ with right:
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
     
         # 標記為已更新（下一輪清空）
-        st.session_state.get("clear_inputs") = True
+        st.session_state["clear_inputs"] = True
         st.success(f"已更新 {tag_column} 標籤")
 
     # === 快速標籤功能 ===
