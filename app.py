@@ -27,17 +27,13 @@ df = st.session_state['df']
 # === 篩選條件 ===
 left, right = st.columns(2)
 
-def clear_input():
+def clear_filter():
     st.session_state["filter_empty_feature"] = False
     st.session_state["filter_empty_subject"] = False
     st.session_state["filter_empty_special"] = False
     st.session_state["filter_keyword"] = ""
     st.session_state["exclude_keyword"] = ""
-    st.session_state["exclude_keyword"] = ""
-    st.session_state["exclude_keyword"] = ""
     st.session_state["filter_brands"] = []
-    st.session_state[f"add_{tag_column}"] = ""
-    st.session_state[f"remove_{tag_column}"] = ""
 clear_input()
 
 with left:
