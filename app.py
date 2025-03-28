@@ -31,9 +31,14 @@ with left:
     keyword = st.text_input("輸入名稱關鍵字進行篩選（針對 title 欄位）", key="filter_keyword").lower()
     exclude_keywords = st.text_input("排除 title 含有下列詞語的資料（用逗號分隔）", key="exclude_keyword").lower()
     selected_brands = st.multiselect("選擇品牌（brand）篩選", df['brand'].dropna().unique(), key="filter_brands")
-    filter_empty_feature = st.checkbox("No Feature", key="filter_empty_feature")
-    filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
-    filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        filter_empty_feature = st.checkbox("No Feature", key="filter_empty_feature")
+    with col2:
+        filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
+    with col3:
+        filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
+
 
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
