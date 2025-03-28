@@ -35,7 +35,10 @@ with left:
         st.session_state["filter_empty_special"] = False
         st.session_state["filter_keyword"] = ""
         st.session_state["exclude_keyword"] = ""
-        st.session_state["filter_brands"] = ""
+        st.session_state["exclude_keyword"] = ""
+        st.session_state["exclude_keyword"] = ""
+        st.session_state["filter_brands"] = []
+        st.session_state["tag_column"] = []
         
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
@@ -50,17 +53,13 @@ with left:
     with col3:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
 
-
-
-
-
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
 
 # === 標籤新增/刪除 ===
 with right:
     st.markdown("### 🏷️ 新增或刪除標籤")
-    tag_column = st.selectbox("選擇要新增/刪除的標籤欄位", ['Feature', 'Subject', 'Special'])
+    tag_column = st.selectbox("選擇要新增/刪除的標籤欄位", ['Feature', 'Subject', 'Special'], key = "tag_column")
     new_tags_input = st.text_input("輸入要新增的標籤（可多個，用逗號分隔）", key=f"add_{tag_column}")
     remove_tags_input = st.text_input("（可選）輸入要刪除的標籤（可多個，用逗號分隔）", key=f"remove_{tag_column}")
 
