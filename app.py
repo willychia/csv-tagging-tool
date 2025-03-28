@@ -88,10 +88,6 @@ with right:
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
         st.success(f"已更新 {tag_column} 標籤")
 
-        # 清空輸入欄位
-        st.session_state[f"add_{tag_column}"] = ""
-        st.session_state[f"remove_{tag_column}"] = ""
-
     # === 快速標籤功能 ===
     st.markdown("### ⚡ 快速新增標籤")
     quick_col, quick_input = st.columns([1, 3])
