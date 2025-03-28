@@ -34,7 +34,7 @@ def clear_filter():
     st.session_state["filter_keyword"] = ""
     st.session_state["exclude_keyword"] = ""
     st.session_state["filter_brands"] = []
-clear_input()
+clear_filter()
 
 with left:
     st.markdown("### 🔍 篩選資料")    
