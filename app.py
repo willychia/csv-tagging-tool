@@ -31,17 +31,26 @@ with left:
     keyword = st.text_input("輸入名稱關鍵字進行篩選（針對 title 欄位）", key="filter_keyword").lower()
     exclude_keywords = st.text_input("排除 title 含有下列詞語的資料（用逗號分隔）", key="exclude_keyword").lower()
     selected_brands = st.multiselect("選擇品牌（brand）篩選", df['brand'].dropna().unique(), key="filter_brands")
+    # 先取目前狀態
+    f1 = st.session_state.get("filter_empty_feature", False)
+    f2 = st.session_state.get("filter_empty_subject", False)
+    f3 = st.session_state.get("filter_empty_special", False)
+    
+    # 切換狀態按鈕（在 checkbox 前面！）
+    if st.button("🔁 切換 No Feature / Subject / Special 勾選狀態"):
+        f1 = not f1
+        f2 = not f2
+        f3 = not f3
+    
+    # 建立 checkbox（用 value 接剛剛的變數）
     col1, col2, col3 = st.columns(3)
     with col1:
-        filter_empty_feature = st.checkbox("No Feature", key="filter_empty_feature")
+        filter_empty_feature = st.checkbox("No Feature", value=f1, key="filter_empty_feature")
     with col2:
-        filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
+        filter_empty_subject = st.checkbox("No Subject", value=f2, key="filter_empty_subject")
     with col3:
-        filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
-    if st.button("🔁 切換 No Feature / Subject / Special 勾選狀態"):
-        st.session_state["filter_empty_feature"] = not st.session_state.get("filter_empty_feature", False)
-        st.session_state["filter_empty_subject"] = not st.session_state.get("filter_empty_subject", False)
-        st.session_state["filter_empty_special"] = not st.session_state.get("filter_empty_special", False)
+        filter_empty_special = st.checkbox("No Special", value=f3, key="filter_empty_special")
+
 
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
