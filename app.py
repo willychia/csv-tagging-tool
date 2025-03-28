@@ -58,6 +58,8 @@ selected_rows = pd.DataFrame()
 with right:
     st.markdown("### 🏷️ 新增或刪除標籤")
     tag_column = st.selectbox("選擇要新增/刪除的標籤欄位", ['Feature', 'Subject', 'Special'], key = "tag_column")
+    st.session_state[f"add_{tag_column}"] = ""
+    st.session_state[f"remove_{tag_column}"] = ""
     new_tags_input = st.text_input("輸入要新增的標籤（可多個，用逗號分隔）", key=f"add_{tag_column}")
     remove_tags_input = st.text_input("（可選）輸入要刪除的標籤（可多個，用逗號分隔）", key=f"remove_{tag_column}")
 
