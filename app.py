@@ -85,20 +85,16 @@ if quick_tag_value.strip():
     filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
     st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
 
-# === 勾選刪除資料 ===
-st.markdown("#### 🧹 操作勾選資料")
-delete_disabled = filtered_df["✔"].sum() == 0
-if st.button("🗑️ 刪除勾選資料", disabled=delete_disabled):
-    selected_asins = filtered_df[filtered_df["✔"] == True]['asin']
-    st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(selected_asins)]
+# === 刪除目前篩選資料 ===
+st.markdown("#### 🧹 刪除目前篩選結果")
+if st.button("🗑️ 刪除目前篩選結果中所有資料"):
+    asins_to_delete = filtered_df['asin']
+    st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
     filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
     filtered_df.insert(0, "✔", False)
-    st.success(f"已刪除 {len(selected_asins)} 筆資料")
+    st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
-if delete_disabled:
-    st.caption("請先在表格左側勾選欲刪除的資料列")
 
-# === 顯示資料與匯出 ===
 st.markdown("---")
 st.subheader(f"📊 篩選與更新結果（共 {len(filtered_df)} 筆）")
 edited_df = render_table(filtered_df)
