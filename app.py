@@ -35,7 +35,6 @@ with left:
     filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
 
 filtered_df = get_filtered_df(keyword, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
-filtered_df.insert(0, "✔", False)
 selected_rows = pd.DataFrame()
 
 # === 標籤新增/刪除 ===
