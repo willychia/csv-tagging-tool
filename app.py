@@ -66,7 +66,7 @@ with right:
     with right_title_1:
         st.markdown("### 🏷️ 新增/刪除標籤")
     with right_title_2:
-        if st.button("🔄 清除標籤"):
+        if st.button("🔄 清除標籤") or st.session_state.get("clear_inputs"):
             st.session_state[f"add_{tag_column}"] = ""
             st.session_state[f"remove_{tag_column}"] = ""
     tag_column = st.selectbox("選擇要新增/刪除的標籤欄位", ['Feature', 'Subject', 'Special'], key = "tag_column")
@@ -90,7 +90,7 @@ with right:
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
     
         # 標記為已更新（下一輪清空）
-        st.session_state['tags_updated'] = True
+        st.session_state.get("clear_inputs") = True
         st.success(f"已更新 {tag_column} 標籤")
 
     # === 快速標籤功能 ===
