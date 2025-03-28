@@ -13,11 +13,11 @@ def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_fea
         _df = _df[~_df['title'].fillna("").str.contains(kw, case=False)]
 
     for kw in [k.strip() for k in feature_filter.split(",") if k.strip()]:
-        _df = _df[~_df['Feature'].fillna("").str.contains(kw, case=False)]
+        _df = _df[_df['Feature'].fillna("").str.contains(kw, case=False)]
     for kw in [k.strip() for k in subject_filter.split(",") if k.strip()]:
-        _df = _df[~_df['Subject'].fillna("").str.contains(kw, case=False)]
+        _df = _df[_df['Subject'].fillna("").str.contains(kw, case=False)]
     for kw in [k.strip() for k in special_filter.split(",") if k.strip()]:
-        _df = _df[~_df['Special'].fillna("").str.contains(kw, case=False)]
+        _df = _df[_df['Special'].fillna("").str.contains(kw, case=False)]
 
     if selected_brands:
         _df = _df[_df['brand'].isin(selected_brands)]
