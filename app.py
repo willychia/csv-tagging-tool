@@ -86,39 +86,39 @@ with right:
         st.session_state[f"add_{tag_column}"] = ""
         st.session_state[f"remove_{tag_column}"] = ""
         st.success(f"已更新 {tag_column} 標籤")
+    # === 快速標籤功能 ===
+    st.markdown("### ⚡ 快速新增標籤")
+    quick_col, quick_input = st.columns([1, 3])
+    with quick_col:
+        quick_tag_column = st.selectbox("選擇標籤欄位", ['Feature', 'Subject', 'Special'], key="quick_tag_column")
+    with quick_input:
+        quick_tag_value = st.text_input("輸入關鍵字並套用為標籤（會自動套用到 title 含該字詞的資料）", key="quick_tag_value")
+    
+    if quick_tag_value.strip():
+        keyword = quick_tag_value.strip().lower()
+        match_df = st.session_state['df'][st.session_state['df']['title'].str.contains(keyword, na=False)]
+    
+        def add_quick_tag(cell):
+            existing = set(map(str.strip, str(cell).split(","))) if pd.notna(cell) and cell.strip() else set()
+            existing.add(keyword)
+            return ", ".join(sorted(existing))
+    
+        for idx in match_df.index:
+            original = st.session_state['df'].at[idx, quick_tag_column]
+            st.session_state['df'].at[idx, quick_tag_column] = add_quick_tag(original)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+        st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
+    
+    # === 刪除目前篩選資料 ===
+    st.markdown("### 🧹 刪除目前篩選結果")
+    if st.button("🗑️ 刪除目前篩選結果中所有資料"):
+        asins_to_delete = filtered_df['asin']
+        st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+        filtered_df.insert(0, "✔", False)
+        st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
-# === 快速標籤功能 ===
-st.markdown("---")
-st.markdown("### ⚡ 快速新增標籤")
-quick_col, quick_input = st.columns([1, 3])
-with quick_col:
-    quick_tag_column = st.selectbox("選擇標籤欄位", ['Feature', 'Subject', 'Special'], key="quick_tag_column")
-with quick_input:
-    quick_tag_value = st.text_input("輸入關鍵字並套用為標籤（會自動套用到 title 含該字詞的資料）", key="quick_tag_value")
 
-if quick_tag_value.strip():
-    keyword = quick_tag_value.strip().lower()
-    match_df = st.session_state['df'][st.session_state['df']['title'].str.contains(keyword, na=False)]
-
-    def add_quick_tag(cell):
-        existing = set(map(str.strip, str(cell).split(","))) if pd.notna(cell) and cell.strip() else set()
-        existing.add(keyword)
-        return ", ".join(sorted(existing))
-
-    for idx in match_df.index:
-        original = st.session_state['df'].at[idx, quick_tag_column]
-        st.session_state['df'].at[idx, quick_tag_column] = add_quick_tag(original)
-    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
-    st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
-
-# === 刪除目前篩選資料 ===
-st.markdown("#### 🧹 刪除目前篩選結果")
-if st.button("🗑️ 刪除目前篩選結果中所有資料"):
-    asins_to_delete = filtered_df['asin']
-    st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
-    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
-    filtered_df.insert(0, "✔", False)
-    st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
 
 st.markdown("---")
