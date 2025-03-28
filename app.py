@@ -62,16 +62,10 @@ selected_rows = pd.DataFrame()
 
 # === 標籤新增/刪除 ===
 with right:
-    right_title_1, right_title_2 = st.columns(2)
-    with right_title_1:
-        st.markdown("### 🏷️ 新增/刪除標籤")
-    with right_title_2:
-        if st.button("🔄 清除標籤"):
-            st.session_state[f"add_{tag_column}"] = ""
-            st.session_state[f"remove_{tag_column}"] = ""
-    tag_column = st.selectbox("選擇要新增/刪除的標籤欄位", ['Feature', 'Subject', 'Special'], key = "tag_column")
-    new_tags_input = st.text_input("輸入要新增的標籤（可多個，用逗號分隔）", key=f"add_{tag_column}")
-    remove_tags_input = st.text_input("（可選）輸入要刪除的標籤（可多個，用逗號分隔）", key=f"remove_{tag_column}")
+    st.markdown("### 🏷️ 新增/刪除標籤")
+    tag_column = st.selectbox("選擇欄位", ['Feature', 'Subject', 'Special'], key = "tag_column")
+    new_tags_input = st.text_input("輸入要新增的標籤", key=f"add_{tag_column}")
+    remove_tags_input = st.text_input("輸入要刪除的標籤", key=f"remove_{tag_column}")
 
     if new_tags_input.strip() or remove_tags_input.strip():
         add_tags = set(t.strip() for t in new_tags_input.split(",") if t.strip())
