@@ -27,17 +27,18 @@ df = st.session_state['df']
 # === 篩選條件 ===
 left, right = st.columns(2)
 
-def clear_filter():
-    st.session_state["filter_empty_feature"] = False
-    st.session_state["filter_empty_subject"] = False
-    st.session_state["filter_empty_special"] = False
-    st.session_state["filter_keyword"] = ""
-    st.session_state["exclude_keyword"] = ""
-    st.session_state["filter_brands"] = []
-clear_filter()
-
 with left:
-    st.markdown("### 🔍 篩選資料")    
+    left_title_1, left_title_2 = st.column(2)
+    with left_title_1:
+        st.markdown("### 🔍 篩選資料")
+    with left_title_2:
+        if st.button("🔄 清除篩選"):
+            st.session_state["filter_empty_feature"] = False
+            st.session_state["filter_empty_subject"] = False
+            st.session_state["filter_empty_special"] = False
+            st.session_state["filter_keyword"] = ""
+            st.session_state["exclude_keyword"] = ""
+            st.session_state["filter_brands"] = []
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
     selected_brands = st.multiselect("Brand 篩選", df['brand'].dropna().unique(), key="filter_brands")
@@ -48,8 +49,7 @@ with left:
         filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
     with col3:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
-    if st.button("🔄 清除所有輸入格"):
-        clear_input()
+    
 
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
