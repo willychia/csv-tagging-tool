@@ -38,9 +38,15 @@ with left:
             st.session_state["filter_empty_special"] = False
             st.session_state["filter_keyword"] = ""
             st.session_state["exclude_keyword"] = ""
+            st.session_state["filter_feature"] = ""
+            st.session_state["filter_subject"] = ""
+            st.session_state["filter_special"] = ""
             st.session_state["filter_brands"] = []
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
+    feature_filter = st.text_input("Feature 篩選", key="filter_feature")
+    subject_filter = st.text_input("Subject 篩選", key="filter_subject")
+    special_filter = st.text_input("Special 篩選", key="filter_special")
     selected_brands = st.multiselect("Brand 篩選", df['brand'].dropna().unique(), key="filter_brands")
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -51,7 +57,7 @@ with left:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
     
 
-filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
 selected_rows = pd.DataFrame()
 
 # === 標籤新增/刪除 ===
@@ -76,7 +82,7 @@ with right:
         for idx in filtered_df.index:
             original_value = st.session_state['df'].at[idx, tag_column]
             st.session_state['df'].at[idx, tag_column] = modify(original_value)
-        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
         st.session_state[f"add_{tag_column}"] = ""
         st.session_state[f"remove_{tag_column}"] = ""
         st.success(f"已更新 {tag_column} 標籤")
@@ -102,7 +108,7 @@ if quick_tag_value.strip():
     for idx in match_df.index:
         original = st.session_state['df'].at[idx, quick_tag_column]
         st.session_state['df'].at[idx, quick_tag_column] = add_quick_tag(original)
-    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
     st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
 
 # === 刪除目前篩選資料 ===
@@ -110,7 +116,7 @@ st.markdown("#### 🧹 刪除目前篩選結果")
 if st.button("🗑️ 刪除目前篩選結果中所有資料"):
     asins_to_delete = filtered_df['asin']
     st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
-    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+    filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
     filtered_df.insert(0, "✔", False)
     st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
