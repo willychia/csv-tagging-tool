@@ -69,23 +69,37 @@ with right:
     new_tags_input = st.text_input("輸入要新增的標籤（可多個，用逗號分隔）", key=f"add_{tag_column}")
     remove_tags_input = st.text_input("（可選）輸入要刪除的標籤（可多個，用逗號分隔）", key=f"remove_{tag_column}")
 
+    # 加上控制旗標
+    if 'tags_updated' not in st.session_state:
+        st.session_state['tags_updated'] = False
+    
+    # 檢查是否有需要執行更新
     if new_tags_input.strip() or remove_tags_input.strip():
         add_tags = set(t.strip() for t in new_tags_input.split(",") if t.strip())
         remove_tags = set(t.strip() for t in remove_tags_input.split(",") if t.strip())
-
+    
         def modify(cell):
             existing = set(map(str.strip, str(cell).split(","))) if pd.notna(cell) and cell.strip() else set()
             updated = (existing.union(add_tags)).difference(remove_tags)
             sorted_tags = sorted(updated)
             return ", ".join(sorted_tags) if sorted_tags else ""
-
+    
         for idx in filtered_df.index:
             original_value = st.session_state['df'].at[idx, tag_column]
             st.session_state['df'].at[idx, tag_column] = modify(original_value)
+    
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+    
+        # 標記為已更新（下一輪清空）
+        st.session_state['tags_updated'] = True
+        st.success(f"已更新 {tag_column} 標籤")
+    
+    # 第二輪：清除輸入框
+    if st.session_state.get("tags_updated"):
         st.session_state[f"add_{tag_column}"] = ""
         st.session_state[f"remove_{tag_column}"] = ""
-        st.success(f"已更新 {tag_column} 標籤")
+        st.session_state["tags_updated"] = False
+
     # === 快速標籤功能 ===
     st.markdown("### ⚡ 快速新增標籤")
     quick_col, quick_input = st.columns([1, 3])
