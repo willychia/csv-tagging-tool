@@ -76,14 +76,10 @@ with right:
             sorted_tags = sorted(updated)
             return ", ".join(sorted_tags) if sorted_tags else ""
 
-        for _, row in filtered_df.iterrows():
-            asin = row["asin"]
-            df_index = st.session_state['df'].index[st.session_state['df']['asin'] == asin]
-            if not df_index.empty:
-                i = df_index[0]
-                original_value = st.session_state['df'].at[i, tag_column]
-                new_value = modify(original_value)
-                st.session_state['df'].at[i, tag_column] = new_value
+        for idx in filtered_df.index:
+            original_value = st.session_state['df'].at[idx, tag_column]
+            new_value = modify(original_value)
+            st.session_state['df'].at[idx, tag_column] = new_value
 
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
         st.success(f"已更新 {tag_column} 標籤")
