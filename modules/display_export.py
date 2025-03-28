@@ -5,7 +5,6 @@ import io
 def render_table(filtered_df):
     return st.data_editor(
         filtered_df,
-        column_config={"✔": st.column_config.CheckboxColumn(label="✔ 選取", default=False)},
         use_container_width=True,
         disabled=["asin", "title", "brand", "Feature", "Subject", "Special"],
         key="selectable_table"
