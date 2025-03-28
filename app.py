@@ -75,6 +75,8 @@ with right:
             original_value = st.session_state['df'].at[idx, tag_column]
             st.session_state['df'].at[idx, tag_column] = modify(original_value)
         filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
+        st.session_state[f"add_{tag_column}"] = ""
+        st.session_state[f"remove_{tag_column}"] = ""
         st.success(f"已更新 {tag_column} 標籤")
 
 # === 快速標籤功能 ===
