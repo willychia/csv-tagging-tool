@@ -26,27 +26,23 @@ df = st.session_state['df']
 
 # === 篩選條件 ===
 left, right = st.columns(2)
+def clear_input():
+    st.session_state["filter_empty_feature"] = False
+    st.session_state["filter_empty_subject"] = False
+    st.session_state["filter_empty_special"] = False
+    st.session_state["filter_keyword"] = ""
+    st.session_state["exclude_keyword"] = ""
+    st.session_state["exclude_keyword"] = ""
+    st.session_state["exclude_keyword"] = ""
+    st.session_state["filter_brands"] = []
+    st.session_state[f"add_{tag_column}"] = ""
+    st.session_state[f"remove_{tag_column}"] = ""
+    
 with left:
-    st.markdown("### 🔍 篩選資料")
-    # 🔁 放在 checkbox 前面
-    if st.button("🔄 清除所有輸入格"):
-        st.session_state["filter_empty_feature"] = False
-        st.session_state["filter_empty_subject"] = False
-        st.session_state["filter_empty_special"] = False
-        st.session_state["filter_keyword"] = ""
-        st.session_state["exclude_keyword"] = ""
-        st.session_state["exclude_keyword"] = ""
-        st.session_state["exclude_keyword"] = ""
-        st.session_state["filter_brands"] = []
-        st.session_state[f"add_{tag_column}"] = ""
-        st.session_state[f"remove_{tag_column}"] = ""
-
-        
+    st.markdown("### 🔍 篩選資料")    
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
     selected_brands = st.multiselect("Brand 篩選", df['brand'].dropna().unique(), key="filter_brands")
-    
-    # ✅ 勾選框要寫在這個按鈕之後
     col1, col2, col3 = st.columns(3)
     with col1:
         filter_empty_feature = st.checkbox("No Feature", key="filter_empty_feature")
@@ -54,6 +50,8 @@ with left:
         filter_empty_subject = st.checkbox("No Subject", key="filter_empty_subject")
     with col3:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
+    if st.button("🔄 清除所有輸入格"):
+        clear_input()
 
 filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special)
 selected_rows = pd.DataFrame()
