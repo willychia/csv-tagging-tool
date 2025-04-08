@@ -30,6 +30,8 @@ def normalize_and_add_columns():
                 for col in ['Feature', 'Subject', 'Special']:
                     if col not in df.columns:
                         df[col] = ""
+                # 更新回去 session_state
+                st.session_state['new_df'] = df
 
 def merge_data():
     new_df = st.session_state['new_df']
