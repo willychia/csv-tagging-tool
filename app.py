@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 from modules.page import set_page, init_session_state
-from modules.data_io import upload_files, normalize_columns, merge_data
+from modules.data_io import upload_files, normalize_and_add_columns, merge_data
 from modules.data_ops import get_filtered_df
 from modules.display_export import render_table, export_data
 
