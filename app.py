@@ -13,7 +13,7 @@ init_session_state()
 
 # === 上傳與合併資料 ===
 upload_files()
-normalize_columns()
+normalize_and_add_columns()
 
 if st.button("🔄 載入新舊檔案並合併"):
     if 'new_df' in st.session_state and 'old_df' in st.session_state:
