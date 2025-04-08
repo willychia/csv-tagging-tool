@@ -147,8 +147,13 @@ def render_tag_table(tag_series, column_title, session_key_prefix):
 
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            new_page = st.slider("頁碼", 1, total_pages, current_page, key=f"{session_key_prefix}_slider")
-            st.session_state[f"{session_key_prefix}_page"] = new_page
+            if total_pages > 1:
+                new_page = st.slider("頁碼", 1, total_pages, current_page)
+                st.session_state[f"{session_key_prefix}_page"] = new_page
+            else:
+                st.markdown("頁數：1")
+                st.session_state[f"{session_key_prefix}_page"] = 1
+
 
 # 三欄並排顯示
 col_feature, col_subject, col_special = st.columns(3)
