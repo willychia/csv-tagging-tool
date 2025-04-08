@@ -16,7 +16,19 @@ upload_files()
 normalize_columns()
 
 if st.button("🔄 載入新舊檔案並合併"):
-    merge_data()
+    if 'new_df' in st.session_state and 'old_df' in st.session_state:
+        merge_data()
+        st.success("✅ 新舊資料已成功合併！")
+        st.dataframe(st.session_state['df'])
+    elif 'new_df' in st.session_state:
+        st.session_state['df'] = st.session_state['new_df'].copy()
+        st.info("📌 目前僅有新檔案上傳")
+        st.dataframe(st.session_state['df'])
+    elif 'old_df' in st.session_state:
+        st.session_state['df'] = st.session_state['old_df'].copy()
+        st.info("📌 目前僅有舊檔案上傳")
+        st.dataframe(st.session_state['df'])
+
 
 if st.session_state['df'] is None:
     st.info("請先上傳並載入檔案後再進行操作。")
