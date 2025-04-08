@@ -16,12 +16,20 @@ def upload_files():
         if old_file:
             st.session_state['old_df'] = pd.read_csv(old_file) if old_file.name.endswith(".csv") else pd.read_excel(old_file)
 
-def normalize_columns():
-    for df_part in [st.session_state['new_df'], st.session_state['old_df']]:
-        if df_part is not None:
+def normalize_and_add_columns():
+    for key in ['new_df', 'old_df']:
+        df = st.session_state.get(key)
+        if df is not None:
+            # 標準化欄位
             for col in ['title', 'brand']:
-                if col in df_part.columns:
-                    df_part[col] = df_part[col].astype(str).str.lower()
+                if col in df.columns:
+                    df[col] = df[col].astype(str).str.lower()
+
+            # 若是 new_df，就補齊 Feature、Subject、Special 欄位
+            if key == 'new_df':
+                for col in ['Feature', 'Subject', 'Special']:
+                    if col not in df.columns:
+                        df[col] = ""
 
 def merge_data():
     new_df = st.session_state['new_df']
