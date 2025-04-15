@@ -4,7 +4,7 @@ def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_fea
     _df = st.session_state['df'].copy()
 
     # 多關鍵字交集篩選（處理 NaN 並忽略大小寫）
-    keywords = [k.strip() for k in keyword.split(",") if k.strip()]
+    keywords = [k for k in keyword.split(",") if k]
     for kw in keywords:
         _df = _df[_df['title'].fillna("").str.contains(kw, case=False)]
         
