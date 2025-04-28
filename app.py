@@ -134,25 +134,16 @@ def get_tag_count_series(column_name):
 def render_tag_table(tag_series, column_title, session_key_prefix):
     tags_df = tag_series.reset_index()
     tags_df.columns = ["標籤", "出現次數"]
+    st.markdown(f"#### {column_title}")
 
-    total_pages = (len(tags_df) - 1) // 10 + 1
-    current_page = st.session_state.get(f"{session_key_prefix}_page", 1)
-
-    col = st.container()
-    with col:
-        st.markdown(f"#### {column_title}")
-        start_idx = (current_page - 1) * 10
-        end_idx = start_idx + 10
-        st.table(tags_df.iloc[start_idx:end_idx])
-
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if total_pages > 1:
-                new_page = st.slider("頁碼", 1, total_pages, current_page, key=f"{session_key_prefix}_slider")
-                st.session_state[f"{session_key_prefix}_page"] = new_page
-            else:
-                st.markdown("頁數：1")
-                st.session_state[f"{session_key_prefix}_page"] = 1
+    st.data_editor(
+        tags_df,
+        use_container_width=True,
+        hide_index=True,
+        disabled=["標籤", "出現次數"],
+        key=f"{key_prefix}_tag_table",
+        num_rows="dynamic",
+    )
 
 
 # 三欄並排顯示
