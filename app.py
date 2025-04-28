@@ -121,7 +121,7 @@ with right:
 
 st.markdown("---")
 st.subheader(f"📊 篩選與更新結果（共 {len(filtered_df)} 筆）")
-edited_df = render_table(filtered_df)
+edited_df = render_table(filtered_df).sort_values(by="Keyword Count", ascending=True).reset_index(drop=True)
 
 # === 標籤統計顯示模組 ===
 st.markdown("### 🧮 標籤統計")
