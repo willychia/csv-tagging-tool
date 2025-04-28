@@ -2,9 +2,22 @@ import streamlit as st
 import pandas as pd
 import io
 
+def calculate_keyword_count(df):
+    def count_tags(cell):
+        if pd.isna(cell) or cell.strip() == '':
+            return 0
+        return len([tag.strip() for tag in str(cell).split(",") if tag.strip()])
+    
+    feature_count = df['Feature'].apply(count_tags)
+    subject_count = df['Subject'].apply(count_tags)
+    special_count = df['Special'].apply(count_tags)
+    
+    df['Keyword Count'] = (feature_count * subject_count) + special_count
+    return df
+
 def render_table(filtered_df):
     return st.data_editor(
-        filtered_df,
+        calculate_keyword_count(filtered_df),
         use_container_width=True,
         disabled=["asin", "title", "brand", "Feature", "Subject", "Special"],
         key="selectable_table"
