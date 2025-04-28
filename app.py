@@ -141,7 +141,7 @@ def render_tag_table(tag_series, column_title, session_key_prefix):
         use_container_width=True,
         hide_index=True,
         disabled=["標籤", "出現次數"],
-        key=f"{key_prefix}_tag_table",
+        key=f"{session_key_prefix}_tag_table",
         num_rows="dynamic",
     )
 
