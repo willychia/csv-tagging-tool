@@ -13,7 +13,6 @@ def calculate_keyword_count(df):
     special_count = df['Special'].apply(count_tags)
     
     df['Keyword Count'] = (feature_count * subject_count) + special_count
-    df = df.sort_values(by="Keyword Count", ascending=True).reset_index(drop=True)
     return df
 
 def render_table(filtered_df):
@@ -22,7 +21,7 @@ def render_table(filtered_df):
         use_container_width=True,
         disabled=["asin", "title", "brand", "Feature", "Subject", "Special"],
         key="selectable_table"
-    )
+    ).sort_values(by="Keyword Count", ascending=True).reset_index(drop=True)
 
 def export_data():
     output_format = st.radio("選擇匯出格式", ["CSV", "Excel"], horizontal=True)
