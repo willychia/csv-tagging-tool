@@ -16,12 +16,22 @@ def calculate_keyword_count(df):
     return df
 
 def render_table(filtered_df):
-    return st.data_editor(
+    edited_df = st.data_editor(
         calculate_keyword_count(filtered_df),
         use_container_width=True,
         disabled=["asin", "title", "brand", "Feature", "Subject", "Special"],
-        key="selectable_table"
-    ).sort_values(by="Keyword Count", ascending=True).reset_index(drop=True)
+        key="selectable_table",
+    )
+
+    # 每次讀取使用者修改後的資料
+    if isinstance(edited_df, pd.DataFrame):
+        # 重新計算 Keyword Count
+        edited_df = calculate_keyword_count(edited_df)
+
+        # 按 Keyword Count 排序
+        edited_df = edited_df.sort_values(by="Keyword Count", ascending=True).reset_index(drop=True)
+
+    return edited_df
 
 def export_data():
     output_format = st.radio("選擇匯出格式", ["CSV", "Excel"], horizontal=True)
