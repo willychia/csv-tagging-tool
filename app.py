@@ -59,8 +59,7 @@ with left:
     with col3:
         filter_empty_special = st.checkbox("No Special", key="filter_empty_special")
 
-filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
-selected_rows = pd.DataFrame()
+filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter, asin_filter)
 
 # === 標籤新增/刪除 ===
 with right:
