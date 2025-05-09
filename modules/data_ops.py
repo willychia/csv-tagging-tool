@@ -1,6 +1,6 @@
 import streamlit as st
 
-def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter):
+def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter, asin_filter):
     _df = st.session_state['df'].copy()
 
     # 多關鍵字交集篩選（處理 NaN 並忽略大小寫）
@@ -18,6 +18,9 @@ def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_fea
         _df = _df[_df['Subject'].fillna("").str.contains(kw, case=False)]
     for kw in [k.strip() for k in special_filter.split(",") if k.strip()]:
         _df = _df[_df['Special'].fillna("").str.contains(kw, case=False)]
+
+    for asin in [asin.strip() for asin in asin_filter.split(" ") if asin.strip()]:
+        _df = _df[_df['ASIN'].fillna("").str.contains(asin, case=False)]
 
     if selected_brands:
         _df = _df[_df['brand'].isin(selected_brands)]
