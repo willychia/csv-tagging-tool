@@ -44,6 +44,7 @@ with left:
             st.session_state["filter_subject"] = ""
             st.session_state["filter_special"] = ""
             st.session_state["filter_brands"] = []
+            st.session_state["filter_asin"] = ""
     keyword = st.text_input("Title 篩選", key="filter_keyword").lower()
     exclude_keywords = st.text_input("Title 排除", key="exclude_keyword").lower()
     feature_filter = st.text_input("Feature 篩選", key="filter_feature")
