@@ -107,7 +107,7 @@ with right:
             original = st.session_state['df'].at[idx, quick_tag_column]
             st.session_state['df'].at[idx, quick_tag_column] = add_quick_tag(original)
 
-        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter, asin_filter)
         st.success(f"已將 '{keyword}' 新增至 {quick_tag_column} 中，共 {len(match_df)} 筆")
 
     # === 刪除目前篩選資料 ===
@@ -115,7 +115,7 @@ with right:
     if st.button("🗑️ 刪除目前篩選結果中所有資料"):
         asins_to_delete = filtered_df['asin']
         st.session_state['df'] = st.session_state['df'][~st.session_state['df']['asin'].isin(asins_to_delete)]
-        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter, asin_filter)
         filtered_df.insert(0, "✔", False)
         st.success(f"已刪除 {len(asins_to_delete)} 筆資料")
 
