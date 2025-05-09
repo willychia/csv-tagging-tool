@@ -21,8 +21,10 @@ def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_fea
         _df = _df[_df['Special'].fillna("").str.contains(kw, case=False)]
     
     asin_list = re.split(r"[,\s]+", asin_filter)
-    for asin in [asin for asin in asin_list if asin]:
-        _df = _df[_df['asin'].fillna("").str.contains(asin, case=False)]
+    asin_list = [asin for asin in asin_list if asin]
+    if asin_list:
+        pattern = "|".join(map(re.escape, asin_list))
+        _df = _df[_df['asin'].fillna("").str.contains(pattern, case=False)]
 
     if selected_brands:
         _df = _df[_df['brand'].isin(selected_brands)]
