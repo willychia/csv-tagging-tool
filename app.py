@@ -50,6 +50,7 @@ with left:
     subject_filter = st.text_input("Subject 篩選", key="filter_subject")
     special_filter = st.text_input("Special 篩選", key="filter_special")
     selected_brands = st.multiselect("Brand 篩選", df['brand'].dropna().unique(), key="filter_brands")
+    asin_filter = st.text_input("ASIN 篩選", key="filter_asin").upper()
     col1, col2, col3 = st.columns(3)
     with col1:
         filter_empty_feature = st.checkbox("No Feature", key="filter_empty_feature")
