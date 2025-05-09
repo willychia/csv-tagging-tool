@@ -20,7 +20,7 @@ def get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_fea
         _df = _df[_df['Special'].fillna("").str.contains(kw, case=False)]
 
     for asin in [asin.strip() for asin in asin_filter.split(" ") if asin.strip()]:
-        _df = _df[_df['ASIN'].fillna("").str.contains(asin, case=False)]
+        _df = _df[_df['asin'].fillna("").str.contains(asin, case=False)]
 
     if selected_brands:
         _df = _df[_df['brand'].isin(selected_brands)]
