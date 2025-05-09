@@ -83,7 +83,7 @@ with right:
             new_value = modify(original_value)
             st.session_state['df'].at[idx, tag_column] = new_value
 
-        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, special_filter)
+        filtered_df = get_filtered_df(keyword, exclude_keywords, selected_brands, filter_empty_feature, filter_empty_subject, filter_empty_special, feature_filter, subject_filter, asin_filter)
         st.success(f"已更新 {tag_column} 標籤")
 
     # === 快速標籤功能 ===
